@@ -54,7 +54,7 @@ If you want to select parameters manually, try:
 ### Parameters
 
 - --data-name: dataset used for link prediction. *default = NS*
-  - NS, Power, Router, GRQ, cora, citeseer, Email...
+  - currently only support MAT format files
 - --hop: the enclosing subgraph hop number. *default = 2*
 - --bins-num: The number of bins evenly distributed in the 2-D plane. *default = 900*
 - --h_init: the initialization of Gauss sensors' bandwidth. *default = 0.025*
