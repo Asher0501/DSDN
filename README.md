@@ -1,4 +1,8 @@
-# DSDN
+# A Transformative Topological Representation for Link Modeling, Prediction and Cross-domain Network Analysis
+
+## Introduction
+
+Pytorch implementation of [A Transformative Topological Representation for Link Modeling, Prediction and Cross-domain Network Analysis](https://ieeexplore.ieee.org/document/10475559/).
 
 This method does link predition task based on the topology of local enclosing subgraph.
 
