@@ -4,6 +4,8 @@
 
 Pytorch implementation of [A Transformative Topological Representation for Link Modeling, Prediction and Cross-domain Network Analysis](https://ieeexplore.ieee.org/document/10475559/).
 
+![image](https://github.com/Asher0501/DSDN/assets/166387056/b3b9f028-82dd-4a1d-b76e-22c39897df2f)
+
 This method does link predition task based on the topology of local enclosing subgraph.
 
 There are three versions provided:
