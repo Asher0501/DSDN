@@ -268,55 +268,9 @@ def get_subgraph_set(pos_or_neg, net, hop, max_nodes_per_hop = 100):
 def parallel_worker(x):
     return subgraph_extraction_labeling(*x)
 
-def centers_initial(num_centers, cords):
-    inter = 1/math.sqrt(num_centers)
-    start_index = inter / 2
-    length = int(math.sqrt(num_centers))
-    centers_x = torch.arange(start_index, 1 + start_index, inter)
-    for i in range(length - 1):
-        centers_x = torch.cat((centers_x, torch.arange(start_index, 1 + start_index, inter)), 0)
-    centers_x = centers_x.unsqueeze(dim = 1)
-    centers_y = torch.zeros(length, 1)
-    centers_y = centers_y + start_index
-    for i in range(1, length):
-        temp = torch.zeros(length, 1)
-        temp = temp + start_index + i * inter
-        centers_y = torch.cat((centers_y, temp), 0)
-    centers = torch.cat((centers_x, centers_y), 1)
-    index_dict = {}
-    for i in range(num_centers):
-        index_dict[i] = 0
-    for i in range(cords.shape[0]):
-        if(math.floor(cords[i,0]) == 1):
-            x_index = 19
-        else:
-            x_index = math.floor(cords[i,0]*math.sqrt(num_centers))
-        if(math.floor(cords[i,1]) == 1):
-            y_index = 19
-        else:
-            y_index = math.floor(cords[i,1]*math.sqrt(num_centers))
-        index_dict[x_index + y_index * length] += 1
-    i = 0
-    for key, value in index_dict.items():
-        if value > 0:
-            if(i == 0):
-                c = centers[key, :].unsqueeze(dim = 0)
-                i += 1
-            else:
-                c = torch.cat((c, centers[key, :].unsqueeze(dim = 0)), dim = 0)
-    '''index_dict = sorted(index_dict.items(), key=lambda item:item[1], reverse = True)
-    for i in range(len(index_dict)):
-        if(i == 0):
-            c = centers[index_dict[i][0], :].unsqueeze(dim = 0)
-        else:
-            c = torch.cat((c, centers[index_dict[i][0], :].unsqueeze(dim = 0)), dim = 0)
-        if(i == seed_num):
-            break'''
-    return c
-
 from sklearn.cluster import KMeans
 
-def cluster(centers_num, centers, cords):
+def cluster(centers_num, cords):
     # ini_c = centers.numpy()
     data = cords.numpy()
     # estimator = KMeans(n_clusters = centers_num, init = ini_c)
@@ -418,7 +372,7 @@ def loop(model, graph_list, c, num_seeds=900, h_init=0.025, if_train=False):
     y = y.to(device)
 
     if(if_train):
-        centers = centers_initial(num_seeds, cords)
+        centers = cluster(num_seeds, cords)
         cords = cords.to(device)
         set_seed(114514)
         model =Net(centers, centers.shape[0], h_init)
